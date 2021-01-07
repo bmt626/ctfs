@@ -1,0 +1,3 @@
+using LFI read the /etc/passwd file to find the user. 
+from there read the user.txt file to get flag
+
