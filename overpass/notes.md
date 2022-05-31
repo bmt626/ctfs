@@ -14,3 +14,13 @@ upon refresing the page you are greated with an rsa private key and a message
 
 ![](admin_rsakey.png)
 
+
+using ssh2john I converted the sshkey to a john hash format 
+then using john and the following command I cracked the password
+```
+john --wordlist rockyou.txt id_rsa.hash --format=ssh
+```
+
+
+password:james13
+
