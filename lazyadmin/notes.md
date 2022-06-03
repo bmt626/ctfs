@@ -158,8 +158,15 @@ sudo -l
 ```
 ![](screenshots/sudol.png)
 
-we can run the itguys backup.pl script as root with no password perfect 
+we can run the itguys backup.pl script as root with no password, perfect! 
 it calls the copy.sh script so lets change it to give us root when ran.
+
+we need to change the copy.sh file that the backup.pl script calls so we get a shell when it is called
+since vi is not on this system we can easily do this with the following command
+```
+echo "sh" > /etc/copy.sh
+```
+this will overwirte the copy.sh to call sh when ran. Now we need to run the backup.pl script to get our shell
 
 Trying to run
 ```
@@ -177,3 +184,17 @@ just doing sudo perl or sudo /home/itguy/backup.pl will not work
 it will just give us the same error as above since the www-data user can only run
 those two commands together with out a password.
 
+*the reason we have to do them together is because there is not comma (,) seperating the commands ins the sudoers file this means they have to be ran together if we had a comma we could just run one or the other as root with no password*
+
+So now that we understand that a little better lets get root!
+
+```
+sudo perl /home/itguy/backup.pl
+```
+![](screenshots/root.png)
+
+we can now get our root flag
+```
+cat /root/root.txt
+THM{6637f41d0177b6f37cb20d775124699f}
+```
