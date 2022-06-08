@@ -30,3 +30,5 @@ LDAP popular with 3rd party applications that use AD
 LDAP has its own set of AD Credentials it uses to authenticate directly and verify your creds are vaild. this gives you new attack vectors (you could get the applicatons username and password :) )
 
 ![](screenshots/ldap_auth.png)
+
+"These credentials are often stored in plain text in configuration files since the security model relies on keeping the location and storage configuration file secure rather than its contents."
