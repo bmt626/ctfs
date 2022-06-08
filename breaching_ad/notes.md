@@ -32,3 +32,14 @@ LDAP has its own set of AD Credentials it uses to authenticate directly and veri
 ![](screenshots/ldap_auth.png)
 
 "These credentials are often stored in plain text in configuration files since the security model relies on keeping the location and storage configuration file secure rather than its contents."
+
+you can create your own rouge ldap server using slapd and ldap-utils
+
+*tryhackme attackbox is running - slapd/bionic-updates,bionic-security 2.4.45+dfsg-1ubuntu1.11 amd64 [upgradable from: 2.4.45+dfsg-1ubuntu1.10]
+  OpenLDAP server (slapd)*
+![](screenshots/attackbox_slapd.png)
+
+
+ldap passback creds
+- za.tryhackme.com\svcLDAP
+- tryhackmeldappass1@
