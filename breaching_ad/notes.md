@@ -70,3 +70,32 @@ hashtype 5600 is the NTLMv2-SSP hash within hashcat
 
 - svcFileCopy
 - FPassword1!
+
+## Microsoft Deployment Toolkit
+
+### Microsoft System Center Configuration Manager (SCCM) 
+ - MDT assist with automation in deploying Windows
+ - MDT is integrated into SCCM
+ - MDT is used for new deployments
+ - SCCM manages updates for Microsoft applications, services and windows os updates.
+ - Allows for patch managment and sandboxed testing before rolling out domain wide.
+
+### PXE Boot
+![](screenshots/pxe_boot.png)
+
+ - Pre execution enviroment
+ - allows devices to connect to the network and install images (os install) over the network
+ - uses TFTP
+
+ exploiting a pxe image happens for two reasons
+  - inital priv esc vector  (gaining access to local admin account for control from boot)
+  - performing password scraping attack to gain access to AD creds used during the install (this task focuses on that)
+
+### PXE Boot Image Retrieval
+- when using pxe the dhcp server will give you the ip of the MDT server when requesting an ip address (pxeboot.za.tryhackme.com in this network)
+- you will also get back a list of names for the .bcd files
+- bcd files store information pertaining to the pxe boots for different architecture types.
+
+![](screenshots/bcd_files.png)
+
+
