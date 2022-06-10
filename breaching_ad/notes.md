@@ -122,3 +122,9 @@ Get-FindCredentials -WimFile pxeboot.wim
 >>>> >>>> UserPassword = PXEBootSecure1@
 
 ```
+
+## Configuration Files
+- domain: za.tryhackme.com
+- user: svcAV
+- password_encrypted: jWbTyS7BL1Hj7PkO5Di/QhhYmcGj5cOoZ2OkDTrFXsR/abAFPM9B3Q==
+- Decrypted password : MyStrongPassword!
